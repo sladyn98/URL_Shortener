@@ -29,22 +29,31 @@ func MapHandler(pathsToUrls map[string]string, fallback http.Handler) http.Handl
 
 //InstanceConfig is the struct for the config
 type InstanceConfig struct {
-	URL string
-	Path string
+	Path []string
+	URL []string
 }
 
 func parseYAML(yml []byte) (InstanceConfig,error) {
-
 	var config InstanceConfig
-	fmt.Println("yaml is ", yml)
 	err := yaml.Unmarshal(yml, &config)
     if err != nil {
 		fmt.Println(err)
 		panic(err)
 	}
-	fmt.Println("Let us first print the right config",config.URL)
 	return config,nil
 }
+
+func buildMap(instance InstanceConfig) map[string]string {
+		var urlMap map[string]string
+		urlMap =  make(map[string]string)
+		fmt.Println("instance is",instance)
+		for i := range instance.Path {
+			urlMap[instance.Path[i]] = instance.URL[i]
+		} 
+		return urlMap
+}
+
+
 
 // YAMLHandler will parse the provided YAML and then return
 // an http.HandlerFunc (which also implements http.Handler)
@@ -67,10 +76,9 @@ func YAMLHandler(yml []byte, fallback http.Handler) (http.HandlerFunc, error) {
 		if err != nil {
 			return nil, err
 		}
-		fmt.Println(parsedYaml.URL)
-		// pathMap := buildMap(parsedYaml)
-		// return MapHandler(pathMap, fallback), nil
-		return nil, nil
+		fmt.Println(parsedYaml)
+		pathMap := buildMap(parsedYaml)
+		return MapHandler(pathMap, fallback), nil
 }
 
 
