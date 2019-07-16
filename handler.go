@@ -53,8 +53,6 @@ func buildMap(instance InstanceConfig) map[string]string {
 		return urlMap
 }
 
-
-
 // YAMLHandler will parse the provided YAML and then return
 // an http.HandlerFunc (which also implements http.Handler)
 // that will attempt to map any paths to their corresponding
