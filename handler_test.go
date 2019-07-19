@@ -22,3 +22,9 @@ func TestBuildMap(t *testing.T) {
 		t.Errorf("URL Expected: %s\n URL Received: %s\n",actualURL,urlReceived)
 	}
 }
+
+func TestParseYaml(t *testing.T) {
+
+	// Step 1: Store yaml in a string
+	// Step 2: Pass and assert values
+}
