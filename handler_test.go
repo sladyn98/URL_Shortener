@@ -3,6 +3,8 @@ package urlshort
 
 import(
 	 "testing"
+	 "os"
+	 "io/ioutil"
 	 
 )
 
@@ -24,7 +26,26 @@ func TestBuildMap(t *testing.T) {
 }
 
 func TestParseYaml(t *testing.T) {
+	dir, err := os.Getwd()
+	data, err := ioutil.ReadFile(dir + "/main/urls.yml")
+		if err != nil {
+			t.Errorf("This is a readfile error " + dir + "/main/urls.yml")
+		}
+	var config InstanceConfig
+	config,_ = parseYAML(data)
 
-	// Step 1: Store yaml in a string
-	// Step 2: Pass and assert values
+	actualConfigIndexOne := "/urlshort"
+	receivedConfigIndexOne := config.Path[0]
+
+	if(actualConfigIndexOne != receivedConfigIndexOne) {
+		t.Errorf("Config Expected: %s\n Config Received: %s\n",actualConfigIndexOne,receivedConfigIndexOne)
+	}
+
+	actualConfigIndexTwo := "/urlshort-final"
+	receivedConfigIndexTwo := config.Path[1]
+
+	if(actualConfigIndexTwo != receivedConfigIndexTwo) {
+		t.Errorf("Config Expected: %s\n Config Received: %s\n",actualConfigIndexTwo,receivedConfigIndexTwo)
+	}
+
 }
